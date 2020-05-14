@@ -36,8 +36,8 @@ contract BtcPaymaster is BasePaymaster {
         return '';
     }
 
-    function preRelayedCall(bytes calldata context) external override returns (bytes32) {
-        return '';
+    function preRelayedCall(bytes calldata context) external relayHubOnly override returns (bytes32) {
+        return bytes32(0);
     }
 
     function postRelayedCall(

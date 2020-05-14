@@ -1,5 +1,5 @@
 import { ethers } from '@nomiclabs/buidler';
-import { FEE, ERC20_TOKEN, TORNADO_PBTC_INSTANCES_ADDRESSES } from '../config';
+import { FEE, ERC20_TOKEN, TORNADO_PBTC_INSTANCES_ADDRESSES, RELAY_HUB } from '../config';
 
 async function main() {
     const BtcPaymaster = await ethers.getContractFactory('BtcPaymaster');
@@ -11,11 +11,13 @@ async function main() {
     // The contract is NOT deployed yet; we must wait until it is mined
     await btcPaymaster.deployed();
 
+    let tx = await btcPaymaster.setRelayHub(RELAY_HUB);
+    console.log(`Setting RelayHub address to ${RELAY_HUB}, tx hash: ${tx.hash}.`);
+
     for (let i = 0; i < TORNADO_PBTC_INSTANCES_ADDRESSES.length; i++) {
         let instanceAddress = TORNADO_PBTC_INSTANCES_ADDRESSES[i];
-        let tx = await btcPaymaster.addTarget(instanceAddress);
+        tx = await btcPaymaster.addTarget(instanceAddress);
         console.log(`Adding instance ${instanceAddress} to the mapping of targets, tx hash: ${tx.hash}.`);
-        await tx.wait();
     }
 }
 

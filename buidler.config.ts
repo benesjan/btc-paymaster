@@ -1,14 +1,13 @@
 // eslint-disable-next-line no-unused-vars
 import { BuidlerConfig, usePlugin } from '@nomiclabs/buidler/config';
-import { NETWORK, INFURA_PROJECT_ID, PRIVATE_KEY, ETHERSCAN_API_KEY } from './config';
+import { INFURA_PROJECT_ID, PRIVATE_KEY, ETHERSCAN_API_KEY } from './config';
 
 usePlugin('@nomiclabs/buidler-ethers');
 usePlugin('@nomiclabs/buidler-etherscan');
 
-const ETHERSCAN_API_PREFIX: string = NETWORK === 'mainnet' ? 'api' : `api-${NETWORK}`;
+const ETHERSCAN_API_PREFIX: string = process.argv.includes('mainnet') ? 'api' : `api-ropsten`;
 
 const config: BuidlerConfig = {
-    defaultNetwork: NETWORK,
     solc: {
         version: '0.6.7',
     },

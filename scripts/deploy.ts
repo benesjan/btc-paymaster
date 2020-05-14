@@ -1,13 +1,11 @@
 import { ethers } from '@nomiclabs/buidler';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import { FEE, ERC20_TOKEN } from '../config';
 
 async function main() {
     const factory = await ethers.getContract('BtcPaymaster');
 
     // If we had constructor arguments, they would be passed into deploy()
-    let contract = await factory.deploy(process.env.FEE, process.env.ERC20_TOKEN);
+    let contract = await factory.deploy(FEE, ERC20_TOKEN);
 
     // The address the Contract WILL have once mined
     console.log(contract.address);

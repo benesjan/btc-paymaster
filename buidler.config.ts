@@ -1,15 +1,9 @@
+// eslint-disable-next-line no-unused-vars
 import { BuidlerConfig, usePlugin } from '@nomiclabs/buidler/config';
-import * as dotenv from 'dotenv';
+import { NETWORK, INFURA_PROJECT_ID, PRIVATE_KEY, ETHERSCAN_API_KEY } from './config';
 
 usePlugin('@nomiclabs/buidler-ethers');
 usePlugin('@nomiclabs/buidler-etherscan');
-
-dotenv.config();
-
-const NETWORK: string = <string>process.env.NETWORK;
-const INFURA_PROJECT_ID: string = <string>process.env.INFURA_PROJECT_ID;
-const PRIVATE_KEY: string = <string>process.env.PRIVATE_KEY;
-const ETHERSCAN_API_KEY: string = <string>process.env.ETHERSCAN_API_KEY;
 
 const ETHERSCAN_API_PREFIX: string = NETWORK === 'mainnet' ? 'api' : `api-${NETWORK}`;
 

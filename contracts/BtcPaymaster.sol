@@ -4,12 +4,16 @@ pragma experimental ABIEncoderV2;
 import '@opengsn/gsn/contracts/BasePaymaster.sol';
 import 'openzeppelin-solidity/contracts/token/ERC20/IERC20.sol';
 
+// target contract interface - Tornado
+abstract contract Target {
+    uint256 public denomination;
+}
 
 contract BtcPaymaster is BasePaymaster {
     uint256 private _fee;
     IERC20 private _token;
     // Contracts for which the paymaster is willing to pay for and their denominations
-    mapping(address => uint256) _targetDenominations;
+    mapping(address => Target) _targets;
 
     constructor(uint256 fee, address tokenAddress) public Ownable() {
         _fee = fee;
@@ -20,12 +24,12 @@ contract BtcPaymaster is BasePaymaster {
         _fee = fee;
     }
 
-    function addTarget(address newTarget, uint256 denomination) public onlyOwner {
-        _targetDenominations[newTarget] = denomination;
+    function addTarget(address newTarget) public onlyOwner {
+        _targets[newTarget] = Target(newTarget);
     }
 
     function removeTarget(address target) public onlyOwner {
-        _targetDenominations[target] = 0;
+        delete _targets[target];
     }
 
     function withdraw(address withdrawAddress) public onlyOwner {
@@ -37,12 +41,12 @@ contract BtcPaymaster is BasePaymaster {
         bytes calldata approvalData,
         uint256 maxPossibleGas
     ) external override view returns (bytes memory) {
-        uint256 targetDenomination = _targetDenominations[relayRequest.target];
-        require(targetDenomination != 0, 'Address not in targets.');
+        uint256 denomination = _targets[relayRequest.target].denomination();
+        require(denomination != 0, 'Address not in targets.');
         address sender = relayRequest.relayData.senderAddress;
-        require(_token.balanceOf(sender) >= (targetDenomination + _fee), "Sender's balance is too low");
+        require(_token.balanceOf(sender) >= (denomination + _fee), "Sender's balance is too low");
         require(
-            _token.allowance(sender, relayRequest.target) >= targetDenomination,
+            _token.allowance(sender, relayRequest.target) >= denomination,
             "Sender's allowance for tornado is lower than the tornado denomination"
         );
         require(

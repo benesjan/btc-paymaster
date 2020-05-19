@@ -1,5 +1,5 @@
 import { ethers } from '@nomiclabs/buidler';
-import { FEE, ERC20_TOKEN, RELAY_HUB, TornadoInstance, TORNADO_PBTC_INSTANCES } from '../config';
+import { FEE, ERC20_TOKEN, RELAY_HUB, TORNADO_PBTC_INSTANCES } from '../config';
 import * as fs from 'fs';
 
 async function main() {
@@ -21,10 +21,8 @@ async function main() {
     console.log(`Setting RelayHub address to ${RELAY_HUB}, tx hash: ${tx.hash}.`);
 
     for (let i = 0; i < TORNADO_PBTC_INSTANCES.length; i++) {
-        let instance: TornadoInstance = TORNADO_PBTC_INSTANCES[i];
-        console.log(instance.denomination);
-        tx = await btcPaymaster.addTarget(instance.address, instance.denomination);
-        console.log(`Adding instance ${instance.address} to the mapping of targets, tx hash: ${tx.hash}.`);
+        tx = await btcPaymaster.addTarget(TORNADO_PBTC_INSTANCES[i]);
+        console.log(`Adding instance ${TORNADO_PBTC_INSTANCES[i]} to the mapping of targets, tx hash: ${tx.hash}.`);
     }
 }
 

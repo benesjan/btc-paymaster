@@ -1,5 +1,5 @@
 import { ethers } from '@nomiclabs/buidler';
-import { TORNADO_PBTC_INSTANCES, TornadoInstance } from '../config';
+import { TORNADO_PBTC_INSTANCES } from '../config';
 const deployment = require('../lastDeployment.json');
 
 async function main() {
@@ -9,11 +9,8 @@ async function main() {
     console.log(`Contract address: ${btcPaymaster.address}`);
 
     for (let i = 0; i < TORNADO_PBTC_INSTANCES.length; i++) {
-        let instance: TornadoInstance = TORNADO_PBTC_INSTANCES[i];
-        let tx = await btcPaymaster.addTarget(instance.address, instance.denomination);
-        console.log(
-            `Adding instance ${instance.address} (denomination: ${instance.denomination}) to the mapping of targets, tx hash: ${tx.hash}.`,
-        );
+        let tx = await btcPaymaster.addTarget(TORNADO_PBTC_INSTANCES[i]);
+        console.log(`Adding instance ${TORNADO_PBTC_INSTANCES[i]} to the mapping of targets, tx hash: ${tx.hash}.`);
     }
 }
 

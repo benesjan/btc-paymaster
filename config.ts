@@ -1,6 +1,6 @@
 const ERC20_TOKEN_DECIMALS: number = 18;
-// pBTC has 18 decimals - 10^15 = 'denomination':0.001 pBTC
-const FEE: number = 0.001 * 10 ** ERC20_TOKEN_DECIMALS;
+// pBTC has 18 decimals - 10^15 = 'denomination':0.0001 pBTC ~1USD
+const FEE: number = 0.0001 * 10 ** ERC20_TOKEN_DECIMALS;
 const ERC20_TOKEN: string = '0xEB770B1883Dcce11781649E8c4F1ac5F4B40C978';
 const INFURA_PROJECT_ID: string = 'e1fcdf9db95a4681b681e54551eb8004';
 // private key for address 0x63A15fdAD87b93261e79a74C07851F900F781Af3

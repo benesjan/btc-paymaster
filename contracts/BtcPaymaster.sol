@@ -40,13 +40,13 @@ contract BtcPaymaster is BasePaymaster {
         uint256 targetDenomination = _targetDenominations[relayRequest.target];
         require(targetDenomination != 0, 'Address not in targets.');
         address sender = relayRequest.relayData.senderAddress;
-        require(_token.balanceOf(sender) <= (targetDenomination + _fee), "Sender's balance is too low");
+        require(_token.balanceOf(sender) >= (targetDenomination + _fee), "Sender's balance is too low");
         require(
-            _token.allowance(sender, relayRequest.target) <= targetDenomination,
+            _token.allowance(sender, relayRequest.target) >= targetDenomination,
             "Sender's allowance for tornado is lower than the tornado denomination"
         );
         require(
-            _token.allowance(sender, address(this)) <= _fee,
+            _token.allowance(sender, address(this)) >= _fee,
             "Sender's allowance for paymaster is lower than the paymaster's fee"
         );
         return abi.encode(sender);

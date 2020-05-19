@@ -9,10 +9,24 @@ const PRIVATE_KEY: string = '0xF8D46A5469433C4369BA77749B760F46208066F92EB9D9DCC
 const ETHERSCAN_API_KEY: string = 'CVXPRKFAX12TIFMFS4E1DMTYA6JD1J83UN';
 const RELAY_HUB: string = '0xef46dd512bcd36619a6531ca84b188b47d85124b';
 
-const TORNADO_PBTC_INSTANCES = [
-    { address: '0x8425EBC05AC74338838A0D99Db495906dF2eAe22', denomination: 0.001 * 10 ** ERC20_TOKEN_DECIMALS },
-    { address: '0x2f2d3E612F3341eCDA859f2eB51b3a51b8eB62BB', denomination: 0.01 * 10 ** ERC20_TOKEN_DECIMALS },
-    { address: '0xE9CaA191fc0D5E0C7fEE83b39F008Ba89b75df13', denomination: 0.1 * 10 ** ERC20_TOKEN_DECIMALS },
+interface TornadoInstance {
+    address: string;
+    denomination: string;
+}
+
+const TORNADO_PBTC_INSTANCES: TornadoInstance[] = [
+    { address: '0x8425EBC05AC74338838A0D99Db495906dF2eAe22', denomination: `${0.001 * 10 ** ERC20_TOKEN_DECIMALS}` },
+    { address: '0x2f2d3E612F3341eCDA859f2eB51b3a51b8eB62BB', denomination: `${0.01 * 10 ** ERC20_TOKEN_DECIMALS}` },
+    { address: '0xE9CaA191fc0D5E0C7fEE83b39F008Ba89b75df13', denomination: `${0.1 * 10 ** ERC20_TOKEN_DECIMALS}` },
 ];
 
-export { FEE, ERC20_TOKEN, INFURA_PROJECT_ID, PRIVATE_KEY, ETHERSCAN_API_KEY, TORNADO_PBTC_INSTANCES, RELAY_HUB };
+export {
+    FEE,
+    ERC20_TOKEN,
+    INFURA_PROJECT_ID,
+    PRIVATE_KEY,
+    ETHERSCAN_API_KEY,
+    RELAY_HUB,
+    TornadoInstance,
+    TORNADO_PBTC_INSTANCES,
+};

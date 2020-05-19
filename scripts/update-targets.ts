@@ -1,5 +1,5 @@
 import { ethers } from '@nomiclabs/buidler';
-import { TORNADO_PBTC_INSTANCES_ADDRESSES, LATEST_DEPLOYED_PAYMASTER } from '../config';
+import { TORNADO_PBTC_INSTANCES, LATEST_DEPLOYED_PAYMASTER } from '../config';
 
 async function main() {
     const BtcPaymaster = await ethers.getContractFactory('BtcPaymaster');
@@ -7,8 +7,8 @@ async function main() {
 
     console.log(`Contract address: ${btcPaymaster.address}`);
 
-    for (let i = 0; i < TORNADO_PBTC_INSTANCES_ADDRESSES.length; i++) {
-        let instanceAddress = TORNADO_PBTC_INSTANCES_ADDRESSES[i];
+    for (let i = 0; i < TORNADO_PBTC_INSTANCES.length; i++) {
+        let instanceAddress = TORNADO_PBTC_INSTANCES[i];
         let tx = await btcPaymaster.addTarget(instanceAddress);
         console.log(`Adding instance ${instanceAddress} to the mapping of targets, tx hash: ${tx.hash}.`);
     }

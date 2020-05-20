@@ -1,6 +1,7 @@
 import { ethers } from '@nomiclabs/buidler';
 import { FEE, ERC20_TOKEN, RELAY_HUB, TORNADO_PBTC_INSTANCES } from '../config';
 import * as fs from 'fs';
+import { depositToRelay } from './txs/deposit-to-relay';
 
 async function main() {
     const BtcPaymaster = await ethers.getContractFactory('BtcPaymaster');
@@ -12,6 +13,7 @@ async function main() {
     // The contract is NOT deployed yet; we must wait until it is mined
     await btcPaymaster.deployed();
 
+    // Save the contract address to a file
     fs.writeFile('lastDeployment.json', JSON.stringify({ paymasterAddress: btcPaymaster.address }), 'utf8', () => {
         console.log('Contract address saved to lastDeployment.json');
     });
@@ -24,6 +26,8 @@ async function main() {
         tx = await btcPaymaster.addTarget(TORNADO_PBTC_INSTANCES[i]);
         console.log(`Adding instance ${TORNADO_PBTC_INSTANCES[i]} to the mapping of targets, tx hash: ${tx.hash}.`);
     }
+
+    await depositToRelay(btcPaymaster.address, RELAY_HUB);
 }
 
 main()

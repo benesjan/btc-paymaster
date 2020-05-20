@@ -1,7 +1,7 @@
 import { ethers } from '@nomiclabs/buidler';
 import { FEE, ERC20_TOKEN, RELAY_HUB, TORNADO_PBTC_INSTANCES } from '../config';
 import * as fs from 'fs';
-import { depositToRelay } from './txs/deposit-to-relay';
+import { depositToRelayTx } from './txs/deposit-to-relay-tx';
 
 async function main() {
     const BtcPaymaster = await ethers.getContractFactory('BtcPaymaster');
@@ -27,7 +27,7 @@ async function main() {
         console.log(`Adding instance ${TORNADO_PBTC_INSTANCES[i]} to the mapping of targets, tx hash: ${tx.hash}.`);
     }
 
-    await depositToRelay(btcPaymaster.address, RELAY_HUB);
+    await depositToRelayTx(btcPaymaster.address, RELAY_HUB, '0.2');
 }
 
 main()

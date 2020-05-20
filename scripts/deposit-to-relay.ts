@@ -1,10 +1,10 @@
 import { RELAY_HUB } from '../config';
-import { depositToRelay } from './txs/deposit-to-relay';
+import { depositToRelayTx } from './txs/deposit-to-relay-tx';
 
 const paymasterAddress = require('../lastDeployment.json').paymasterAddress;
 
 async function main() {
-    await depositToRelay(paymasterAddress, RELAY_HUB);
+    await depositToRelayTx(paymasterAddress, RELAY_HUB, '0.2');
 }
 
 main()

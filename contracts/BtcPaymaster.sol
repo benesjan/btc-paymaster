@@ -38,7 +38,7 @@ contract BtcPaymaster is BasePaymaster {
     }
 
     function withdraw(address withdrawAddress) public onlyOwner {
-        _token.transferFrom(address(this), withdrawAddress, _token.balanceOf(address(this)));
+        _token.transfer(withdrawAddress, _token.balanceOf(address(this)));
     }
 
     function acceptRelayedCall(

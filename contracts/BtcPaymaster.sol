@@ -15,18 +15,18 @@ abstract contract Target {
 
 
 contract BtcPaymaster is BasePaymaster {
-    uint256 private _fee;
+    uint256 public fee;
     IERC20 private _token;
     // Contracts for which the paymaster is willing to pay for
     mapping(address => Target) _targets;
 
-    constructor(uint256 fee, address tokenAddress) public Ownable() {
-        _fee = fee;
+    constructor(uint256 _fee, address tokenAddress) public Ownable() {
+        fee = _fee;
         _token = IERC20(tokenAddress);
     }
 
-    function setFee(uint256 fee) public onlyOwner {
-        _fee = fee;
+    function setFee(uint256 _fee) public onlyOwner {
+        fee = _fee;
     }
 
     function addTarget(address newTarget) public onlyOwner {
@@ -50,13 +50,13 @@ contract BtcPaymaster is BasePaymaster {
         uint256 denomination = target.denomination();
         require(denomination != 0, 'Address not in targets.');
         address sender = relayRequest.relayData.senderAddress;
-        require(_token.balanceOf(sender) >= (denomination + _fee), "Sender's balance is too low");
+        require(_token.balanceOf(sender) >= (denomination + fee), "Sender's balance is too low");
         require(
             _token.allowance(sender, relayRequest.target) >= denomination,
             "Sender's allowance for tornado is lower than the tornado denomination"
         );
         require(
-            _token.allowance(sender, address(this)) >= _fee,
+            _token.allowance(sender, address(this)) >= fee,
             "Sender's allowance for paymaster is lower than the paymaster's fee"
         );
         bytes4 sig = GsnUtils.getMethodSig(relayRequest.encodedFunction);
@@ -66,8 +66,8 @@ contract BtcPaymaster is BasePaymaster {
 
     function preRelayedCall(bytes calldata context) external override relayHubOnly returns (bytes32) {
         address sender = abi.decode(context, (address));
-        if (_fee != 0) {
-            _token.transferFrom(sender, address(this), _fee);
+        if (fee != 0) {
+            _token.transferFrom(sender, address(this), fee);
         }
         return bytes32(0);
     }
